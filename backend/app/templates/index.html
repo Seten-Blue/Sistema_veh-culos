@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dashboard Vehículos y Mecánicos</title>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+<style>
+/* === Fondo animado con partículas === */
+body {
+    font-family: 'Segoe UI', sans-serif;
+    margin:0;
+    padding:0;
+    overflow-x: hidden;
+}
+#particles-js {
+    position: fixed;
+    top:0;
+    left:0;
+    width:100%;
+    height:100%;
+    z-index:-1;
+    background: linear-gradient(45deg, #41ecf1, #69b2ee, #a1c4fd, #19191a);
+    background-size: 400% 400%;
+    animation: gradientAnimation 30s ease infinite;
+}
+
+/* === Animación de gradiente === */
+@keyframes gradientAnimation {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+/* === Estilos de títulos y cards === */
+h2.section-title {
+    font-size: 2rem;
+    color: #072a68;
+    font-weight: 700;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+    margin-bottom: 30px;
+    position: relative;
+}
+h2.section-title::after { content: "⚙️"; margin-left: 10px; }
+
+.card {
+    border-radius: 15px;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+    margin-bottom: 25px;
+    transition: transform 0.3s, box-shadow 0.3s;
+    background: #faf4f8;
+}
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 35px rgba(0,0,0,0.25);
+}
+.card-header {
+    font-weight: bold;
+    color: #fff;
+    border-top-left-radius: 15px;
+    border-top-right-radius: 15px;
+    background: linear-gradient(90deg, #0B3D91, #0F52BA);
+}
+.vehicle-specs, .mechanic-specs { list-style:none; padding:0; margin:0; }
+.vehicle-specs li, .mechanic-specs li { margin-bottom:5px; font-size: 0.9rem; }
+.status-pending { color:#ffc107; font-weight:bold; }
+.status-completed { color:#28a745; font-weight:bold; }
+.status-cancelled { color:#dc3545; font-weight:bold; }
+
+.btn-floating {
+    position: fixed;
+    bottom:30px;
+    right:30px;
+    width:60px;
+    height:60px;
+    border-radius:50%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:24px;
+    background-color: #0B3D91;
+    color:white;
+    text-decoration:none;
+    box-shadow:0 6px 18px rgba(0,0,0,0.3);
+    z-index:1000;
+    transition: transform 0.3s;
+}
+.btn-floating:hover { transform: scale(1.1); }
+.btn-floating-secondary { bottom:100px; background-color:#0F52BA; }
+
+.modal-header {
+    background: linear-gradient(90deg, #0B3D91, #0F52BA);
+    color: white;
+    border-bottom: none;
+    border-top-left-radius: 15px;
+    border-top-right-radius: 15px;
+}
+.modal-content { box-shadow: 0 10px 35px rgba(0,0,0,0.25); }
+.table th, .table td { vertical-align: middle; }
+</style>
+</head>
+<body>
+
+<!-- Contenedor de partículas -->
+<div id="particles-js"></div>
+
+<div class="container mt-4">
+    <h2 class="section-title">Vehículos Disponibles 🚗</h2>
+    <div class="row" id="vehiculos-container"></div>
+
+    <h2 class="section-title mt-5">Mecánicos Disponibles 👷‍♂️</h2>
+    <div class="row" id="mecanicos-container"></div>
+</div>
+
+<!-- Botones flotantes -->
+<a href="#" class="btn-floating" data-bs-toggle="modal" data-bs-target="#addVehicleModal" title="Agregar vehículo">➕</a>
+<a href="#" class="btn-floating btn-floating-secondary" data-bs-toggle="modal" data-bs-target="#asignacionModal" title="Nueva asignación">📋</a>
+
+<!-- Modal Agregar Vehículo -->
+<div class="modal fade" id="addVehicleModal" tabindex="-1">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header"><h5 class="modal-title">Agregar Vehículo 🚗</h5><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div>
+      <div class="modal-body">
+        <form id="vehicleForm">
+          <div class="mb-3"><label class="form-label">Marca</label><input type="text" class="form-control" name="marca" required></div>
+          <div class="mb-3"><label class="form-label">Modelo</label><input type="text" class="form-control" name="modelo" required></div>
+          <div class="mb-3"><label class="form-label">Kilometraje</label><input type="text" class="form-control" name="kilometraje"></div>
+          <div class="mb-3"><label class="form-label">Combustible</label>
+            <select class="form-select" name="tipo_combustible">
+              <option value="Eléctrico">Eléctrico ⚡</option>
+              <option value="Gasolina">Gasolina ⛽</option>
+              <option value="Diesel">Diesel 🛢️</option>
+              <option value="Híbrido">Híbrido 🔋</option>
+            </select>
+          </div>
+          <div class="mb-3"><label class="form-label">Caballos de Fuerza</label><input type="text" class="form-control" name="caballos"></div>
+          <div class="mb-3"><label class="form-label">Torque</label><input type="text" class="form-control" name="torque"></div>
+          <div class="mb-3"><label class="form-label">Segmento</label>
+            <select class="form-select" name="segmento">
+              <option value="Premium">Premium ⭐</option>
+              <option value="SUV">SUV 🚙</option>
+              <option value="Compacto">Compacto 🚗</option>
+              <option value="Subcompacto">Subcompacto 🚘</option>
+            </select>
+          </div>
+          <button type="submit" class="btn btn-primary w-100">Guardar Vehículo 💾</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal Asignación -->
+<div class="modal fade" id="asignacionModal" tabindex="-1">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header"><h5 class="modal-title">Nueva Asignación 🛠️</h5><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div>
+      <div class="modal-body">
+        <form id="asignacionForm">
+          <div class="row mb-3">
+            <div class="col-md-6">
+              <label class="form-label">Seleccionar Mecánico</label>
+              <select id="selectMecanico" class="form-select" required>
+                <option value="">Seleccione un mecánico...</option>
+              </select>
+            </div>
+            <div class="col-md-6">
+              <label class="form-label">Seleccionar Vehículo</label>
+              <select id="selectVehiculo" class="form-select" required>
+                <option value="">Seleccione un vehículo...</option>
+              </select>
+            </div>
+          </div>
+          <button type="submit" class="btn btn-success w-100">Guardar Asignación 💾</button>
+        </form>
+
+        <h5 class="text-center my-4">Asignaciones Registradas 📋</h5>
+        <table class="table table-striped text-center" id="tablaAsignaciones">
+          <thead class="table-dark">
+            <tr>
+              <th>Vehículo</th>
+              <th>Mecánico</th>
+              <th>Fecha</th>
+              <th>Estado</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+const API_BASE = 'http://localhost:8000';
+
+// Funciones para cargar datos
+async function cargarVehiculos() {
+    const res = await fetch(`${API_BASE}/vehiculos/`);
+    const data = await res.json();
+    const container = document.getElementById('vehiculos-container');
+    const selectVehiculo = document.getElementById('selectVehiculo');
+    container.innerHTML = '';
+    selectVehiculo.innerHTML = '<option value="">Seleccione un vehículo...</option>';
+    data.forEach(v => {
+        const card = document.createElement('div');
+        card.className = 'col-md-4';
+        card.innerHTML = `
+            <div class="card">
+                <div class="card-header">🚗 ${v.marca} ${v.modelo}</div>
+                <div class="card-body">
+                    <ul class="vehicle-specs">
+                        <li>Segmento: ${v.segmento}</li>
+                        <li>Combustible: ${v.tipo_combustible}</li>
+                        <li>Caballos: ${v.caballos}</li>
+                        <li>Torque: ${v.torque}</li>
+                        <li>Kilometraje: ${v.kilometraje}</li>
+                    </ul>
+                </div>
+            </div>`;
+        container.appendChild(card);
+        const option = document.createElement('option');
+        option.value = v.id;
+        option.textContent = `${v.marca} ${v.modelo}`;
+        selectVehiculo.appendChild(option);
+    });
+}
+
+async function cargarMecanicos() {
+    const res = await fetch(`${API_BASE}/mecanicos/`);
+    const data = await res.json();
+    const container = document.getElementById('mecanicos-container');
+    const selectMecanico = document.getElementById('selectMecanico');
+    container.innerHTML = '';
+    selectMecanico.innerHTML = '<option value="">Seleccione un mecánico...</option>';
+    data.forEach(m => {
+        const card = document.createElement('div');
+        card.className = 'col-md-4';
+        card.innerHTML = `
+            <div class="card text-center">
+                <div class="card-header">👷‍♂️ ${m.nombre} ${m.apellido}</div>
+                <div class="card-body">
+                    <ul class="mechanic-specs">
+                        <li>Especialidad: ${m.especialidad || 'General'}</li>
+                        <li>Experiencia: ${m.experiencia || 'N/A'}</li>
+                    </ul>
+                </div>
+            </div>`;
+        container.appendChild(card);
+        const option = document.createElement('option');
+        option.value = m.id;
+        option.textContent = `${m.nombre} ${m.apellido}`;
+        selectMecanico.appendChild(option);
+    });
+}
+
+async function cargarAsignaciones() {
+    const res = await fetch(`${API_BASE}/asignaciones/`);
+    const data = await res.json();
+    const tbody = document.querySelector('#tablaAsignaciones tbody');
+    tbody.innerHTML = '';
+    data.forEach(a => {
+        const tr = document.createElement('tr');
+        let estadoClass = 'status-pending';
+        if(a.estado === 'completado') estadoClass='status-completed';
+        if(a.estado === 'cancelado') estadoClass='status-cancelled';
+        tr.innerHTML = `<td>🚗 ${a.vehiculo}</td><td>👷‍♂️ ${a.mecanico}</td><td>${new Date(a.fecha_asignacion).toLocaleString()}</td><td class="${estadoClass}">${a.estado}</td>`;
+        tbody.appendChild(tr);
+    });
+}
+
+// Formularios
+document.getElementById('vehicleForm').addEventListener('submit', async e=>{
+    e.preventDefault();
+    const data = Object.fromEntries(new FormData(e.target));
+    await fetch(`${API_BASE}/vehiculos/`, {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(data)});
+    e.target.reset(); cargarVehiculos(); cargarAsignaciones();
+    bootstrap.Modal.getInstance(document.getElementById('addVehicleModal')).hide();
+});
+
+document.getElementById('asignacionForm').addEventListener('submit', async e=>{
+    e.preventDefault();
+    const data = {
+        id_mecanico: document.getElementById('selectMecanico').value,
+        id_vehiculo: document.getElementById('selectVehiculo').value
+    };
+    await fetch(`${API_BASE}/asignaciones/`, {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(data)});
+    e.target.reset(); cargarAsignaciones();
+    bootstrap.Modal.getInstance(document.getElementById('asignacionModal')).hide();
+});
+
+window.addEventListener('load', ()=>{
+    cargarVehiculos();
+    cargarMecanicos();
+    cargarAsignaciones();
+});
+
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<!-- Particles.js -->
+<script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
+<script>
+// Inicialización de partículas
+particlesJS("particles-js", {
+  "particles": {
+    "number": { "value": 60 },
+    "color": { "value": "#ffffff" },
+    "shape": { "type": "circle" },
+    "opacity": { "value": 0.3 },
+    "size": { "value": 3 },
+    "line_linked": { "enable": true, "distance": 120, "color": "#ffffff", "opacity": 0.2, "width": 1 },
+    "move": { "enable": true, "speed": 1 }
+  },
+  "interactivity": {
+    "detect_on": "canvas",
+    "events": { "onhover": { "enable": false }, "onclick": { "enable": false } }
+  }
+});
+</script>
+
+</body>
+</html>

@@ -1,0 +1,51 @@
+<div class="container mt-5">
+  <h2 class="section-title">Vehículos Disponibles 🚗</h2>
+
+  <div class="row justify-content-center">
+    <div *ngFor="let v of vehiculos" class="col-md-4 col-sm-6 mb-4">
+      <div class="card shadow-lg border-0 rounded-4">
+        <div class="card-body text-center">
+          <h5 class="card-title fw-bold">{{ v.marca }} {{ v.modelo }}</h5>
+          <ul class="list-unstyled text-start mt-3">
+            <li><strong>Kilometraje:</strong> {{ v.kilometraje }}</li>
+            <li><strong>Combustible:</strong> {{ v.tipo_combustible }}</li>
+            <li><strong>Caballos:</strong> {{ v.caballos }}</li>
+            <li><strong>Torque:</strong> {{ v.torque }}</li>
+            <li><strong>Segmento:</strong> {{ v.segmento }}</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+
+<!-- Modal -->
+<div class="modal fade" id="modalVehiculo" tabindex="-1" aria-labelledby="modalVehiculoLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="modalVehiculoLabel">Agregar Vehículo</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+        <div class="mb-3">
+          <label>Marca:</label>
+          <input [(ngModel)]="nuevoVehiculo.marca" class="form-control" />
+        </div>
+        <div class="mb-3">
+          <label>Modelo:</label>
+          <input [(ngModel)]="nuevoVehiculo.modelo" class="form-control" />
+        </div>
+        <div class="mb-3">
+          <label>Año:</label>
+          <input [(ngModel)]="nuevoVehiculo.anio" class="form-control" />
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+        <button class="btn btn-success" (click)="agregarVehiculo()" data-bs-dismiss="modal">Guardar</button>
+      </div>
+    </div>
+  </div>
+</div>

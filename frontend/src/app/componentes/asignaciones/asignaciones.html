@@ -1,0 +1,80 @@
+<div class="container mt-5">
+  <h2 class="section-title text-center mb-4">Asignaciones Actuales 🛠️</h2>
+
+  <!-- Indicador de carga -->
+  <div *ngIf="cargando" class="text-center my-5">
+    <div class="spinner-border text-warning" role="status">
+      <span class="visually-hidden">Cargando...</span>
+    </div>
+    <p class="mt-2 text-light">Cargando asignaciones...</p>
+  </div>
+
+  <!-- Mensaje de error -->
+  <div *ngIf="error && !cargando" class="alert alert-danger" role="alert">
+    <strong>⚠️ Error:</strong> {{ error }}
+    <button class="btn btn-sm btn-outline-danger ms-3" (click)="cargarAsignaciones()">
+      🔄 Reintentar
+    </button>
+  </div>
+
+  <!-- Tabla de asignaciones -->
+  <div *ngIf="!cargando && !error" class="table-responsive">
+    <table class="table table-dark table-hover table-striped align-middle">
+      <thead class="table-warning">
+        <tr>
+          <th>ID</th>
+          <th>Mecánico</th>
+          <th>Vehículo</th>
+          <th>Descripción</th>
+          <th>Estado</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let asignacion of asignaciones">
+          <td><strong>#{{asignacion.id}}</strong></td>
+          <td>
+            <strong>{{asignacion.mecanico}}</strong>
+            <br><small class="text-muted">ID: {{asignacion.id_mecanico}}</small>
+          </td>
+          <td>
+            <strong>{{asignacion.vehiculo}}</strong>
+            <br><small class="text-muted">ID: {{asignacion.id_vehiculo}}</small>
+          </td>
+          <td>
+            <span *ngIf="asignacion.descripcion && asignacion.descripcion.trim()">
+              {{asignacion.descripcion}}
+            </span>
+            <span *ngIf="!asignacion.descripcion || !asignacion.descripcion.trim()" class="text-muted fst-italic">
+              Sin descripción
+            </span>
+          </td>
+          <td>
+            <select 
+              class="form-select form-select-sm"
+              [value]="asignacion.estado"
+              (change)="cambiarEstado(asignacion.id, $event)"
+              [ngClass]="obtenerClaseEstado(asignacion.estado)">
+              <option value="Pendiente">⏳ Pendiente</option>
+              <option value="En Proceso">⚙️ En Proceso</option>
+              <option value="Completado">✅ Completado</option>
+            </select>
+          </td>
+          <td>
+            <button 
+              class="btn btn-sm btn-danger" 
+              (click)="eliminarAsignacion(asignacion.id)"
+              title="Eliminar asignación">
+              🗑️ Eliminar
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Mensaje si no hay asignaciones -->
+  <div *ngIf="asignaciones.length === 0 && !cargando && !error" class="alert alert-info text-center">
+    📋 No hay asignaciones registradas actualmente.
+  </div>
+</div>

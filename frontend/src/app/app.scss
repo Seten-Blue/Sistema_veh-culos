@@ -1,0 +1,44 @@
+/* Permitir interacción con modal */
+.modal {
+  z-index: 1060 !important;
+  pointer-events: auto !important;
+}
+
+.modal-dialog {
+  z-index: 1061 !important;
+  pointer-events: auto !important;
+}
+
+.modal-content {
+  pointer-events: auto !important;
+  z-index: 1062 !important;
+}
+
+.modal-backdrop {
+  z-index: 1050 !important;
+  pointer-events: auto !important;
+}
+
+/* Asegura que los inputs sean interactivos */
+.modal-body input {
+  pointer-events: auto !important;
+  cursor: text !important;
+}
+
+.modal-footer button {
+  pointer-events: auto !important;
+  cursor: pointer !important;
+}
+
+.btn-close {
+  pointer-events: auto !important;
+  cursor: pointer !important;
+}
+
+/* Reduce z-index de componentes */
+app-vehiculos,
+app-mecanicos,
+app-asignaciones {
+  position: relative;
+  z-index: 1 !important;
+}
