@@ -12,7 +12,11 @@ import { FormsModule } from '@angular/forms';
 })
 export class Vehiculos implements OnInit {
   vehiculos: any[] = [];
-  nuevoVehiculo = { marca: '', modelo: '', anio: '' };
+  nuevoVehiculo = { 
+    marca: '', 
+    modelo: '', 
+    anio: null as number | null  // ✅ Cambio a number
+  };
 
   constructor(private http: HttpClient) {}
 
@@ -21,15 +25,58 @@ export class Vehiculos implements OnInit {
   }
 
   cargarVehiculos() {
-    this.http.get<any[]>('http://localhost:8000/vehiculos')
-      .subscribe(data => this.vehiculos = data);
+    this.http.get<any[]>('http://localhost:8000/vehiculos/')  // ✅ Agregué /
+      .subscribe({
+        next: (data) => {
+          console.log('✅ Vehículos cargados:', data);
+          this.vehiculos = data;
+        },
+        error: (err) => {
+          console.error('❌ Error al cargar vehículos:', err);
+        }
+      });
   }
 
   agregarVehiculo() {
-    this.http.post('http://localhost:8000/vehiculos', this.nuevoVehiculo)
-      .subscribe(() => {
-        this.cargarVehiculos();
-        this.nuevoVehiculo = { marca: '', modelo: '', anio: '' };
+    // ✅ Validación
+    if (!this.nuevoVehiculo.marca || !this.nuevoVehiculo.modelo || !this.nuevoVehiculo.anio) {
+      alert('Por favor completa todos los campos');
+      return;
+    }
+
+    // ✅ Asegurar que el año sea número
+    const vehiculo = {
+      marca: this.nuevoVehiculo.marca.trim(),
+      modelo: this.nuevoVehiculo.modelo.trim(),
+      anio: Number(this.nuevoVehiculo.anio)
+    };
+
+    console.log('📤 Enviando vehículo:', vehiculo);
+
+    this.http.post('http://localhost:8000/vehiculos/', vehiculo)  // ✅ Agregué /
+      .subscribe({
+        next: (response) => {
+          console.log('✅ Vehículo agregado:', response);
+          alert('Vehículo agregado correctamente ✅');
+          this.cargarVehiculos();
+          this.nuevoVehiculo = { marca: '', modelo: '', anio: null };
+        },
+        error: (err) => {
+          console.error('❌ Error completo:', err);
+          console.error('❌ Detalles del error:', err.error);
+          
+          // Mostrar error específico
+          let mensaje = 'Error al agregar vehículo';
+          if (err.error?.detail) {
+            mensaje = err.error.detail;
+          } else if (typeof err.error === 'string') {
+            mensaje = err.error;
+          } else if (err.error) {
+            mensaje = JSON.stringify(err.error);
+          }
+          
+          alert(mensaje);
+        }
       });
   }
 }

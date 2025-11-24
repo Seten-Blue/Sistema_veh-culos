@@ -21,8 +21,10 @@ app = FastAPI(
 app.add_middleware(
     CORSMiddleware,
     allow_origins=[
-        "http://localhost:4200",  # Puerto por defecto de Angular
-        "http://localhost:4400"   # ✅ Tu puerto actual según el error
+        "http://localhost:4200",      # ✅ Puerto de Angular
+        "http://127.0.0.1:4200",      # ✅ Alternativa
+        "http://localhost:4400",      # Por si lo usas
+        "http://localhost:8000",      # ✅ Backend
     ],
     allow_credentials=True,
     allow_methods=["*"],

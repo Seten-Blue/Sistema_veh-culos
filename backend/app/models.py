@@ -12,12 +12,12 @@ class Vehiculo(Base):
     id = Column(Integer, primary_key=True, index=True)
     marca = Column(String(100), nullable=False)
     modelo = Column(String(100), nullable=False)
-    kilometraje = Column(String(50), nullable=False)
-    tipo_combustible = Column(String(50), nullable=False)
-    caballos = Column(String(50), nullable=False)
-    torque = Column(String(50), nullable=False)
-    segmento = Column(String(50), nullable=False)
-    anio = Column(Integer, nullable=True)  # ✅ PUEDE SER NULL
+    kilometraje = Column(String(50), nullable=True)  # ✅ Ahora nullable
+    tipo_combustible = Column(String(50), nullable=True)  # ✅ Ahora nullable
+    caballos = Column(String(50), nullable=True)  # ✅ Ahora nullable
+    torque = Column(String(50), nullable=True)  # ✅ Ahora nullable
+    segmento = Column(String(50), nullable=True)  # ✅ Ahora nullable
+    anio = Column(Integer, nullable=True)
 
 
 class Mecanico(Base):
