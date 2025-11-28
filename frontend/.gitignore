@@ -1,25 +1,55 @@
-# See https://docs.github.com/get-started/getting-started-with-git/ignoring-files for more about ignoring files.
+# ===================================
+# PYTHON
+# ===================================
+venv/
+.venv/
+env/
+ENV/
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+*.egg
+*.egg-info/
+dist/
+build/
+.eggs/
+pip-log.txt
+pip-delete-this-directory.txt
+.pytest_cache/
 
-# Compiled output
-/dist
-/tmp
+# ===================================
+# NODE / ANGULAR
+# ===================================
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.angular/
+.angular/cache
+dist/
 /out-tsc
 /bazel-out
+.sass-cache/
+/connect.lock
+/coverage
+/libpeerconnection.log
+testem.log
+/typings
 
-# Node
-/node_modules
-npm-debug.log
-yarn-error.log
+# ===================================
+# ENVIRONMENT & SECRETS
+# ===================================
+.env
+.env.local
+.env.*.local
+*.pem
+*.key
 
-# IDEs and editors
-.idea/
-.project
-.classpath
-.c9/
-*.launch
-.settings/
-*.sublime-workspace
-
+# ===================================
+# IDEs
+# ===================================
 # Visual Studio Code
 .vscode/*
 !.vscode/settings.json
@@ -28,16 +58,49 @@ yarn-error.log
 !.vscode/extensions.json
 .history/*
 
-# Miscellaneous
-/.angular/cache
-.sass-cache/
-/connect.lock
-/coverage
-/libpeerconnection.log
-testem.log
-/typings
+# IntelliJ / PyCharm
+.idea/
+*.iml
+*.iws
+.idea_modules/
+
+# Sublime Text
+*.sublime-workspace
+*.sublime-project
+
+# Eclipse
+.project
+.classpath
+.settings/
+*.launch
+
+# ===================================
+# OS FILES
+# ===================================
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+Desktop.ini
+
+# ===================================
+# LOGS
+# ===================================
+*.log
+logs/
 __screenshots__/
 
-# System files
-.DS_Store
-Thumbs.db
+# ===================================
+# DATABASE
+# ===================================
+*.sqlite
+*.sqlite3
+*.db
+
+# ===================================
+# DOCKER (opcional, solo si no quieres versionar volúmenes)
+# ===================================
+# docker-compose.override.yml

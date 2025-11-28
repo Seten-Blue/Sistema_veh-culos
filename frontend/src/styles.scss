@@ -1,0 +1,190 @@
+/* Estilos globales - Sistema de Vehículos */
+
+/* === MODALES - CONFIGURACIÓN CRÍTICA === */
+.modal-backdrop {
+  z-index: 1040 !important;
+  background-color: rgba(0, 0, 0, 0.5) !important;
+  pointer-events: auto !important;
+}
+
+.modal {
+  z-index: 1050 !important;
+  pointer-events: none !important;
+}
+
+.modal.show {
+  display: block !important;
+}
+
+.modal-dialog {
+  pointer-events: auto !important;
+  z-index: 1051 !important;
+}
+
+.modal-content {
+  pointer-events: auto !important;
+  background-color: #fff !important;
+  border-radius: 15px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+}
+
+.modal-header {
+  background: linear-gradient(135deg, #0a0f24, #191d3a);
+  color: #00fff6;
+  border-top-left-radius: 15px;
+  border-top-right-radius: 15px;
+  border-bottom: 3px solid #00fff6;
+  pointer-events: auto !important;
+}
+
+.modal-title {
+  color: #00fff6;
+  font-weight: 700;
+}
+
+.btn-close {
+  pointer-events: auto !important;
+  cursor: pointer !important;
+  filter: brightness(0) invert(1);
+}
+
+.modal-body,
+.modal-footer {
+  pointer-events: auto !important;
+}
+
+.modal-body input,
+.modal-body textarea,
+.modal-body select,
+.modal-body button,
+.modal-footer button {
+  pointer-events: auto !important;
+}
+
+.modal-body input,
+.modal-body textarea,
+.modal-body select {
+  cursor: text !important;
+}
+
+.modal-body button,
+.modal-footer button {
+  cursor: pointer !important;
+}
+
+.modal-body .form-control {
+  border: 2px solid rgba(0, 255, 246, 0.3);
+  border-radius: 8px;
+  padding: 0.75rem;
+  transition: all 0.3s ease;
+  pointer-events: auto !important;
+  cursor: text !important;
+}
+
+.modal-body .form-control:focus {
+  border-color: #00fff6;
+  box-shadow: 0 0 0 0.2rem rgba(0, 255, 246, 0.15);
+  outline: none;
+}
+
+.modal-body label {
+  font-weight: 600;
+  color: #0a0f24;
+  margin-bottom: 0.5rem;
+}
+
+.modal-footer .btn {
+  padding: 0.75rem 1.5rem;
+  border-radius: 8px;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  pointer-events: auto !important;
+  cursor: pointer !important;
+}
+
+.modal-footer .btn-success {
+  background: linear-gradient(135deg, #28a745, #20c997);
+  border: none;
+}
+
+.modal-footer .btn-success:hover {
+  background: linear-gradient(135deg, #218838, #1aa179);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(40, 167, 69, 0.3);
+}
+
+.modal-footer .btn-secondary {
+  background: linear-gradient(135deg, #6c757d, #5a6268);
+  border: none;
+}
+
+.modal-footer .btn-secondary:hover {
+  background: linear-gradient(135deg, #5a6268, #545b62);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(108, 117, 125, 0.3);
+}
+
+/* Componentes */
+app-root,
+app-vehiculos,
+app-mecanicos,
+app-asignaciones,
+app-carga-excel {
+  position: relative;
+  z-index: 1 !important;
+}
+
+/* Estilos generales */
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  overflow-x: hidden;
+}
+
+.container {
+  position: relative;
+  z-index: 1;
+}
+
+.section-title {
+  color: #00fff6;
+  text-align: center;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  margin-bottom: 2rem;
+  text-shadow: 0 0 10px rgba(0, 255, 246, 0.5);
+}
+
+.btn-add {
+  background: linear-gradient(135deg, #00fff6, #00d4ff);
+  color: #0a0f24;
+  border: none;
+  padding: 0.75rem 2rem;
+  border-radius: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(0, 255, 246, 0.3);
+}
+
+.btn-add:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 20px rgba(0, 255, 246, 0.5);
+  color: #0a0f24;
+}
+
+.card {
+  background: rgba(255, 255, 255, 0.95);
+  transition: all 0.3s ease;
+}
+.card:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 15px 35px rgba(0, 255, 246, 0.3) !important;
+}

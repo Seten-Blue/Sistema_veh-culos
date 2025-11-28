@@ -8,26 +8,26 @@ from datetime import datetime
 class VehiculoCreate(BaseModel):
     marca: str
     modelo: str
-    anio: Optional[int] = None  # ✅ OPCIONAL - puede ser None
-    kilometraje: str
-    tipo_combustible: str
-    caballos: str
-    torque: str
-    segmento: str
+    anio: Optional[int] = None
+    kilometraje: Optional[str] = None  # ✅ Ahora opcional
+    tipo_combustible: Optional[str] = None  # ✅ Ahora opcional
+    caballos: Optional[str] = None  # ✅ Ahora opcional
+    torque: Optional[str] = None  # ✅ Ahora opcional
+    segmento: Optional[str] = None  # ✅ Ahora opcional
 
 class VehiculoResponse(BaseModel):
     id: int
     marca: str
     modelo: str
-    anio: Optional[int] = None  # ✅ OPCIONAL - puede ser None
-    kilometraje: str
-    tipo_combustible: str
-    caballos: str
-    torque: str
-    segmento: str
+    anio: Optional[int] = None
+    kilometraje: Optional[str] = None  # ✅ Ahora opcional
+    tipo_combustible: Optional[str] = None  # ✅ Ahora opcional
+    caballos: Optional[str] = None  # ✅ Ahora opcional
+    torque: Optional[str] = None  # ✅ Ahora opcional
+    segmento: Optional[str] = None  # ✅ Ahora opcional
 
     class Config:
-        from_attributes = True  # ✅ CAMBIO: Pydantic V2 usa 'from_attributes' en vez de 'orm_mode'
+        from_attributes = True
 
 class VehiculoUpdate(BaseModel):
     marca: Optional[str] = None
@@ -52,7 +52,7 @@ class MecanicoResponse(BaseModel):
     apellido: str
 
     class Config:
-        from_attributes = True  # ✅ CAMBIO: Pydantic V2
+        from_attributes = True
 
 # ========================
 # ASIGNACIONES
@@ -74,4 +74,4 @@ class AsignacionResponse(BaseModel):
     estado: str
 
     class Config:
-        from_attributes = True  # ✅ CAMBIO: Pydantic V2
+        from_attributes = True

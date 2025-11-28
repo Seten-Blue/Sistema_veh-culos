@@ -74,28 +74,43 @@
     </script>
 
     <style>
+      /* Reset y configuración base */
+      * {
+        box-sizing: border-box;
+      }
+
       body {
         margin: 0;
         padding: 0;
         overflow-x: hidden;
-        font-family: "Segoe UI", sans-serif;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         background: none;
+        min-height: 100vh;
       }
 
-      /* Contenedor del fondo */
+      /* Contenedor del fondo de partículas */
       #particles-container {
         position: fixed;
-        inset: 0;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
         z-index: 0;
         overflow: hidden;
         pointer-events: none;
       }
 
-      /* Fondo degradado + partículas */
+      /* Fondo con degradado animado y partículas */
       #particles-js {
         width: 100%;
         height: 100%;
-        background: linear-gradient(135deg, #0a0f24, #191d3a, #212b54, #0b172c);
+        background: linear-gradient(
+          135deg,
+          #0a0f24 0%,
+          #191d3a 33%,
+          #212b54 66%,
+          #0b172c 100%
+        );
         background-size: 400% 400%;
         animation: gradientAnimation 15s ease infinite;
       }
@@ -112,19 +127,176 @@
         }
       }
 
-      /* Contenido principal sobre las partículas */
+      /* Contenido principal de Angular sobre las partículas */
       app-root {
         position: relative;
         z-index: 1;
+        display: block;
+        min-height: 100vh;
       }
 
-      /* Asegurar que los modales estén por encima */
-      .modal {
-        z-index: 1055 !important;
-      }
-
+      /* === CONFIGURACIÓN CRÍTICA DE MODALES === */
+      
+      /* Backdrop del modal */
       .modal-backdrop {
+        z-index: 1040 !important;
+        background-color: rgba(0, 0, 0, 0.5) !important;
+        pointer-events: auto !important;
+      }
+
+      /* Modal container - NO debe capturar eventos */
+      .modal {
         z-index: 1050 !important;
+        pointer-events: none !important;
+      }
+
+      .modal.show {
+        display: block !important;
+      }
+
+      /* Modal dialog - ESTE sí debe capturar eventos */
+      .modal-dialog {
+        pointer-events: auto !important;
+        z-index: 1051 !important;
+      }
+
+      /* Modal content */
+      .modal-content {
+        pointer-events: auto !important;
+        background-color: #fff !important;
+        border-radius: 15px;
+        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+      }
+
+      /* Header del modal */
+      .modal-header {
+        background: linear-gradient(135deg, #0a0f24, #191d3a);
+        color: #00fff6;
+        border-top-left-radius: 15px;
+        border-top-right-radius: 15px;
+        border-bottom: 3px solid #00fff6;
+      }
+
+      .modal-title {
+        color: #00fff6;
+        font-weight: 700;
+      }
+
+      /* Botón de cerrar */
+      .btn-close {
+        pointer-events: auto !important;
+        cursor: pointer !important;
+        filter: brightness(0) invert(1);
+      }
+
+      /* Body y Footer del modal */
+      .modal-body,
+      .modal-footer {
+        pointer-events: auto !important;
+      }
+
+      /* Todos los elementos interactivos dentro del modal */
+      .modal-body input,
+      .modal-body textarea,
+      .modal-body select,
+      .modal-body button,
+      .modal-footer button {
+        pointer-events: auto !important;
+      }
+
+      .modal-body input,
+      .modal-body textarea,
+      .modal-body select {
+        cursor: text !important;
+      }
+
+      .modal-body button,
+      .modal-footer button {
+        cursor: pointer !important;
+      }
+
+      /* Inputs con estilo mejorado */
+      .modal-body .form-control {
+        border: 2px solid rgba(0, 255, 246, 0.3);
+        border-radius: 8px;
+        padding: 0.75rem;
+        transition: all 0.3s ease;
+      }
+
+      .modal-body .form-control:focus {
+        border-color: #00fff6;
+        box-shadow: 0 0 0 0.2rem rgba(0, 255, 246, 0.15);
+        outline: none;
+      }
+
+      /* Labels */
+      .modal-body label {
+        font-weight: 600;
+        color: #0a0f24;
+        margin-bottom: 0.5rem;
+      }
+
+      /* Botones del modal */
+      .modal-footer .btn {
+        padding: 0.75rem 1.5rem;
+        border-radius: 8px;
+        font-weight: 600;
+        transition: all 0.3s ease;
+      }
+
+      .modal-footer .btn-success {
+        background: linear-gradient(135deg, #28a745, #20c997);
+        border: none;
+      }
+
+      .modal-footer .btn-success:hover {
+        background: linear-gradient(135deg, #218838, #1aa179);
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(40, 167, 69, 0.3);
+      }
+
+      .modal-footer .btn-secondary {
+        background: linear-gradient(135deg, #6c757d, #5a6268);
+        border: none;
+      }
+
+      .modal-footer .btn-secondary:hover {
+        background: linear-gradient(135deg, #5a6268, #545b62);
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(108, 117, 125, 0.3);
+      }
+
+      /* Asegurar que componentes NO estén por encima de modales */
+      app-vehiculos,
+      app-mecanicos,
+      app-asignaciones,
+      app-carga-excel {
+        position: relative;
+        z-index: 1 !important;
+      }
+
+      /* Scroll suave */
+      html {
+        scroll-behavior: smooth;
+      }
+
+      /* Personalización de scrollbar */
+      ::-webkit-scrollbar {
+        width: 10px;
+        height: 10px;
+      }
+
+      ::-webkit-scrollbar-track {
+        background: rgba(10, 15, 36, 0.5);
+      }
+
+      ::-webkit-scrollbar-thumb {
+        background: rgba(0, 255, 246, 0.3);
+        border-radius: 5px;
+      }
+
+      ::-webkit-scrollbar-thumb:hover {
+        background: rgba(0, 255, 246, 0.5);
       }
     </style>
   </body>

@@ -1,37 +1,74 @@
 <div class="container mt-5">
   <h2 class="section-title">Mecánicos Disponibles 👷‍♂️</h2>
 
+  <div class="text-center mb-4">
+    <button class="btn btn-add" data-bs-toggle="modal" data-bs-target="#modalMecanico">
+      <i class="fas fa-user-plus me-2"></i>
+      Agregar Mecánico
+    </button>
+  </div>
+
   <div class="row justify-content-center">
     <div *ngFor="let m of mecanicos" class="col-md-4 col-sm-6 mb-4">
       <div class="card shadow-lg border-0 rounded-4">
         <div class="card-body text-center">
+          <div class="mechanic-icon mb-3">
+            <i class="fas fa-user-cog"></i>
+          </div>
           <h5 class="card-title fw-bold">{{ m.nombre }} {{ m.apellido }}</h5>
         </div>
       </div>
     </div>
   </div>
 
+  <!-- Mensaje si no hay mecánicos -->
+  <div *ngIf="mecanicos.length === 0" class="alert alert-info text-center">
+    📋 No hay mecánicos registrados actualmente.
+  </div>
+</div>
+
 <!-- Modal -->
 <div class="modal fade" id="modalMecanico" tabindex="-1" aria-labelledby="modalMecanicoLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="modalMecanicoLabel">Agregar Mecánico</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        <h5 class="modal-title" id="modalMecanicoLabel">
+          <i class="fas fa-user-plus me-2"></i>
+          Agregar Mecánico
+        </h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
         <div class="mb-3">
-          <label>Nombre:</label>
-          <input [(ngModel)]="nuevoMecanico.nombre" class="form-control" />
+          <label for="nombre" class="form-label">Nombre:</label>
+          <input 
+            id="nombre"
+            type="text"
+            [(ngModel)]="nuevoMecanico.nombre" 
+            class="form-control" 
+            placeholder="Ej: Juan"
+          />
         </div>
         <div class="mb-3">
-          <label>Apellido:</label>
-          <input [(ngModel)]="nuevoMecanico.apellido" class="form-control" />
+          <label for="apellido" class="form-label">Apellido:</label>
+          <input 
+            id="apellido"
+            type="text"
+            [(ngModel)]="nuevoMecanico.apellido" 
+            class="form-control" 
+            placeholder="Ej: Pérez"
+          />
         </div>
       </div>
       <div class="modal-footer">
-        <button class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-        <button class="btn btn-success" (click)="agregarMecanico()" data-bs-dismiss="modal">Guardar</button>
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+          <i class="fas fa-times me-2"></i>
+          Cancelar
+        </button>
+        <button type="button" class="btn btn-success" (click)="agregarMecanico()" data-bs-dismiss="modal">
+          <i class="fas fa-check me-2"></i>
+          Guardar
+        </button>
       </div>
     </div>
   </div>

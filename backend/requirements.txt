@@ -1,6 +1,9 @@
 fastapi
 uvicorn[standard]
 sqlalchemy
-psycopg2-binary
+pymysql
+cryptography
 python-multipart
 jinja2
+openpyxl
+pandas
